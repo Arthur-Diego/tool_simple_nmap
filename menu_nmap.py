@@ -1,20 +1,21 @@
-from service import tcp_scanning, udp_scanning, fin_scanning, sys_scanning, icmp_scanning
+from service import tcp_scanning, udp_scanning, fin_scanning, syn_scanning, icmp_scanning
+from colorama import Fore, Style
 
 
 def nmap_menu():
     print("Menu de Varredura Nmap:")
-    print("1. Varredura TCP Scanning")
-    print("2. Varredura SYN Scanning")
-    print("3. Varredura UDP Scanning")
-    print("4. Varredura FIN Scanning")
-    print("5. Varredura ICMP Scanning")
+    print("1. Varredura TCP Connect: ", Fore.RED + "nmap -sT <target>" + Style.RESET_ALL)
+    print("2. Varredura SYN Scanning: ", Fore.RED + "nmap -sS <target>" + Style.RESET_ALL)
+    print("3. Varredura UDP Scanning: ", Fore.RED + "nmap -sU <target>" + Style.RESET_ALL)
+    print("4. Varredura FIN Scanning: ", Fore.RED + "nmap -sF <target>" + Style.RESET_ALL)
+    print("5. Varredura ICMP Scanning (Ping): ", Fore.RED + "nmap -PE <target>" + Style.RESET_ALL)
 
     choice = input("Escolha uma opção (1-5): ")
 
     if choice == '1':
         tcp_scanning.tcp_scan_menu()
     elif choice == '2':
-        sys_scanning.syn_scan_menu()
+        syn_scanning.syn_scan_menu()
     elif choice == '3':
         udp_scanning.udp_scan_menu()
     elif choice == '4':
