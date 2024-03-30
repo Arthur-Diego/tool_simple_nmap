@@ -58,8 +58,11 @@ def udp_scan_menu():
         print("Opção inválida.")
 
 
-def udp_scan(target, options=""):
-    command = ["nmap", "-sU", options, target]
+def udp_scan(target, options=None):
+    if options:
+        command = ["nmap", "-sU", options, target]
+    else:
+        command = ["nmap", "-sU", target]
     execute_nmap_scan(command)
 
 

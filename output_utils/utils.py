@@ -1,4 +1,5 @@
 import subprocess
+from colorama import Fore, Style
 
 
 def ask_for_output(output):
@@ -14,12 +15,20 @@ def ask_for_output(output):
         print("")
 
 
+# command: É uma lista contendo o comando e seus argumentos. Por exemplo, ["nmap", "-PE", "-sn", "192.168.1.1-192.168.1.254"].
+# stdout=subprocess.PIPE: Redireciona a saída padrão do processo para um pipe, permitindo que o código Python leia a saída.
+# stderr=subprocess.STDOUT: Redireciona a saída de erro padrão para o mesmo pipe usado para a saída padrão, unificando as duas saídas.
+# universal_newlines=True: Faz com que a saída seja tratada como texto, independentemente do sistema operacional.
 def execute_command(command):
+    output_lines = []
     try:
-        print("Comando executado: {}".format(" ".join(command)))
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, universal_newlines=True)
-        print(output)
+        print("Comando executado:", Fore.MAGENTA + "{}".format(" ".join(command)) + Style.RESET_ALL)
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
 
-        ask_for_output(output)
+        for line in process.stdout:
+            output_lines.append(line.strip())
+            print(line.strip())
+
+        ask_for_output('\n'.join(output_lines))
     except subprocess.CalledProcessError as e:
         print(f"Erro: {e.output}")

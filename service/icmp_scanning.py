@@ -1,4 +1,5 @@
 import subprocess
+from output_utils import utils
 from ipaddress import ip_address
 from colorama import Fore, Style
 
@@ -61,7 +62,7 @@ def icmp_scan_menu():
 
 def icmp_ping(target, options=""):
     command = ["ping", "-c", "4", target]
-    execute_ping(command)
+    execute_nmap_scan(command)
 
 
 def icmp_ping_from_file(file_path):
@@ -74,27 +75,15 @@ def icmp_ping_from_file(file_path):
 
 def icmp_ping_range(start_ip, end_ip):
     start = ip_address(start_ip)
-    end = ip_address(end_ip)
-
-    for ip_int in range(int(start), int(end) + 1):
-        ip = ip_address(ip_int)
-        icmp_ping(str(ip))
+    end = end_ip
+    ip_range = f"{start}-{end}"
+    command = ["nmap", "-PE", "-sn", ip_range]
+    execute_nmap_scan(command)
 
 
 def icmp_ping_live_hosts(network):
     command = ["nmap", "-sn", network]
     execute_nmap_scan(command)
-
-
-def execute_ping(command):
-    try:
-        print("Comando executado: {}".format(" ".join(command)))
-        output = subprocess.check_output(command, stderr=subprocess.STDOUT, universal_newlines=True)
-        print(output)
-    except subprocess.CalledProcessError as e:
-        print(f"Erro: {e.output}")
-    except KeyboardInterrupt:
-        print("Comando interrompido pelo usuário.")
 
 
 def execute_nmap_scan(command):
